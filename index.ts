@@ -9,7 +9,7 @@ type Guest = {
   id: string;
   firstName: string;
   lastName: string;
-  rsvp: string;
+  attending: string;
 };
 
 let id = 1;
@@ -40,13 +40,15 @@ app.post('/', function (req, res) {
   if (!req.body.firstName || !req.body.lastName) {
     res.status(400).json({
       errors: [
-        { message: 'Request body missing a firstName or lastName property' },
+        {
+          message: 'Request body missing a firstName or lastName property',
+        },
       ],
     });
     return;
   }
 
-  if (Object.keys(req.body).length > 2) {
+  if (Object.keys(req.body).length > 3) {
     res.status(400).json({
       errors: [
         {
@@ -62,7 +64,7 @@ app.post('/', function (req, res) {
     id: String(id++),
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    rsvp: req.body.rsvp,
+    attending: req.body.attending,
   };
 
   guestList.push(guest);
@@ -105,7 +107,7 @@ app.patch('/:id', function (req, res) {
 
   if (req.body.firstName) guest.firstName = req.body.firstName;
   if (req.body.lastName) guest.lastName = req.body.lastName;
-  if ('attending' in req.body) guest.rsvp = req.body.rsvp;
+  if ('attending' in req.body) guest.attending = req.body.attending;
   res.json(guest);
 });
 
